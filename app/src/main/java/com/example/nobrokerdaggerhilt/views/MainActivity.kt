@@ -27,7 +27,7 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() ,ClickListener{
+class MainActivity : AppCompatActivity(), ClickListener {
     lateinit var listApplication: MyApplication
     lateinit var myRepository: NoBrokerRepository
     private var userList = emptyList<ListEntity>()
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() ,ClickListener{
         //checks if internet access if available, if yes then call the api or else get data from database
 
 
-//watch the changes in the edittext and filter recyclerview accordingly
+        //watch the changes in the edittext and filter recyclerview accordingly
         etSearch.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(
@@ -83,42 +83,43 @@ class MainActivity : AppCompatActivity() ,ClickListener{
                 }
             })
 
+        //Call Api on initial page
+        viewModel.displayList().observe(this, Observer {
 
-            viewModel.displayList().observe(this, Observer {
+            /*
+            if launching app for the first time then it[0].title will throw index out of bound exception
+            so we catch it and it the api and not let our app crash
+             */
+            try {
+                checkIfThereInDatabase = it[0].title
+            } catch (e: Exception) {
+                if (checkIfThereInDatabase == null) {
 
-                /*
-                if launching app for the first time then it[0].title will throw index out of bound exception
-                so we catch it and it the api and not let our app crash
-                 */
-                try {
-                    checkIfThereInDatabase = it[0].title
-                } catch (e: Exception) {
-                    if (checkIfThereInDatabase == null) {
-
-                        /*
-                         if internet access is there and also database contains previous data then delete all
-                         data from database and hit the api and store the new list into database
-                          */
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.deleteList()
-                        }
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.getApi()
-                            runOnUiThread {
-                                fetchDataFromDB()
-                            }
-                        }
-                    } else {
-                        /*
-                        if checkIfThereInDatabase is not null means database contains previous data,
-                        so we don't need to hit api again and directly fetch the data from database
-                         */
-                        fetchDataFromDB()
+                    /*
+                     if internet access is there and also database contains previous data then delete all
+                     data from database and hit the api and store the new list into database
+                      */
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.deleteList()
                     }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.getApi()
+                        runOnUiThread {
+                            fetchDataFromDB()
+                        }
+                    }
+                } else {
+                    /*
+                    if checkIfThereInDatabase is not null means database contains previous data,
+                    so we don't need to hit api again and directly fetch the data from database
+                     */
+                    fetchDataFromDB()
                 }
-            })
+            }
+        })
 
     }
+
     //initialize variables
     private fun initialize() {
         listApplication = application as MyApplication

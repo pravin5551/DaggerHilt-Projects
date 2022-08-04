@@ -20,9 +20,9 @@ class NoBrokerRepository(private val listDao: ListDao) {
 
     //adds the list into the room database
     private  fun addList(result: List<ResponseClass>) {
-        for (i in 0..result.size - 1) {
+        for (i in result.indices) {
             val listEntity =
-                ListEntity(result.get(i).image!!, result.get(i).title!!, result.get(i).subTitle!!)
+                ListEntity(result[i].image!!, result[i].title!!, result[i].subTitle!!)
             listDao.addList(listEntity)
         }
     }
