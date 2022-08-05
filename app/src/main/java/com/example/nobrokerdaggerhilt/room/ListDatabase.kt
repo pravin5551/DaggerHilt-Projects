@@ -10,23 +10,23 @@ import androidx.room.RoomDatabase
 abstract class ListDatabase : RoomDatabase() {
 
     abstract fun getListDao(): ListDao
-
-    companion object {
-        private var INSTANCE: ListDatabase? = null
-
-        fun getDatabase(context: Context): ListDatabase {
-            if (INSTANCE == null) {
-                val builder = Room.databaseBuilder(
-                    context,
-                    ListDatabase::class.java,
-                    "list_db"
-                )
-                INSTANCE = builder.build()
-                return INSTANCE!!
-            }
-            return INSTANCE!!
-        }
-
-    }
+//
+//    companion object {
+//        private var INSTANCE: ListDatabase? = null
+//
+//        fun getDatabase(context: Context): ListDatabase {
+//            if (INSTANCE == null) {
+//                val builder = Room.databaseBuilder(
+//                    context,
+//                    ListDatabase::class.java,
+//                    "list_db"
+//                )
+//                INSTANCE = builder.build()
+//                return INSTANCE!!
+//            }
+//            return INSTANCE!!
+//        }
+//
+//    }
 
 }
