@@ -1,13 +1,13 @@
 package com.example.nobrokerdaggerhilt.views
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,9 +16,11 @@ import com.example.nobrokerdaggerhilt.viewModel.NoBrokerViewModel
 import com.example.nobrokerdaggerhilt.R
 import com.example.nobrokerdaggerhilt.adapter.ListAdapter
 import com.example.nobrokerdaggerhilt.interfaces.ClickListener
+import com.example.nobrokerdaggerhilt.module.MyApplication
 import com.example.nobrokerdaggerhilt.repository.NoBrokerRepository
 import com.example.nobrokerdaggerhilt.room.ListEntity
 import com.example.nobrokerdaggerhilt.viewModel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +29,8 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ClickListener {
     lateinit var listApplication: MyApplication
     lateinit var myRepository: NoBrokerRepository
@@ -34,7 +38,10 @@ class MainActivity : AppCompatActivity(), ClickListener {
     lateinit var listAdapter: ListAdapter
     private lateinit var newList: ArrayList<ListEntity>
     private lateinit var tempArrayList: ArrayList<ListEntity>
-    lateinit var viewModel: NoBrokerViewModel
+
+    //    lateinit var viewModel: NoBrokerViewModel by viewModel()
+//private val viewModel:MainViewModel by viewModels()
+    private val viewModel: NoBrokerViewModel by viewModels()
     lateinit var viewModelFactory: ViewModelFactory
     var checkIfThereInDatabase: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,14 +129,14 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
     //initialize variables
     private fun initialize() {
-        listApplication = application as MyApplication
-
-        myRepository = listApplication.myRepository
-
-        viewModelFactory = ViewModelFactory(myRepository)
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(NoBrokerViewModel::class.java)
+//        listApplication = application as MyApplication
+//
+//        myRepository = listApplication.myRepository
+//
+//        viewModelFactory = ViewModelFactory(myRepository)
+//
+//        viewModel = ViewModelProviders.of(this, viewModelFactory)
+//            .get(NoBrokerViewModel::class.java)
 
         tempArrayList = arrayListOf<ListEntity>()
         newList = arrayListOf<ListEntity>()
