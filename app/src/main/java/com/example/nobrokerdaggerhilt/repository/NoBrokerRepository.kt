@@ -5,21 +5,29 @@ import com.example.nobrokerdaggerhilt.modelClass.ResponseClass
 import com.example.nobrokerdaggerhilt.remote.ApiClient
 import com.example.nobrokerdaggerhilt.remote.Network
 import com.example.nobrokerdaggerhilt.room.ListDao
+import com.example.nobrokerdaggerhilt.room.ListDatabase
 import com.example.nobrokerdaggerhilt.room.ListEntity
+import com.example.nobrokerdaggerhilt.viewModel.NoBrokerViewModel
+import javax.inject.Inject
 
-class NoBrokerRepository(private val listDao: ListDao) {
+class NoBrokerRepository @Inject constructor(
+    private val database: ListDatabase,
+    private val apiClient: ApiClient
+) {
 
-    private val apiClient = Network.getInstance().create(ApiClient::class.java)
+    private val listDao = database.getListDao()
 
-    private lateinit var result:List<ResponseClass>
+//    private val apiClient = Network.getInstance().create(ApiClient::class.java)
 
-    suspend fun getList(){
+    private lateinit var result: List<ResponseClass>
+
+    suspend fun getList() {
         result = apiClient.getResponse()
         addList(result)
     }
 
     //adds the list into the room database
-    private  fun addList(result: List<ResponseClass>) {
+    private fun addList(result: List<ResponseClass>) {
         for (i in result.indices) {
             val listEntity =
                 ListEntity(result[i].image!!, result[i].title!!, result[i].subTitle!!)

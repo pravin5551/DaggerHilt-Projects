@@ -4,8 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.nobrokerdaggerhilt.repository.NoBrokerRepository
 import com.example.nobrokerdaggerhilt.room.ListEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class NoBrokerViewModel(private val repository: NoBrokerRepository):ViewModel() {
+@HiltViewModel
+class NoBrokerViewModel @Inject constructor(
+    private val repository: NoBrokerRepository)
+    :ViewModel() {
+
+
     //hit the api using kotlin coroutine
     suspend fun getApi(){
         repository.getList()
